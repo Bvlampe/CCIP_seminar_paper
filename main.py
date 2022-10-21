@@ -9,7 +9,13 @@ loc_ged = loc_folder + "GED_cleaned.csv"
 loc_conflict_end = loc_folder + "ucdp-term-acd-3-2021.csv"
 loc_conflict_all = loc_folder + "ucdp-prio-acd-221.csv"
 
+
+def ccy_create(row):
+    return tuple([row["country"],row["conflict_new_id"], row["year"]])
+
+
 def main():
+    # Read datasets
     homicides = pd.read_csv(loc_homicides, sep=';')
     ged = pd.read_csv(loc_ged)
     conflict_end = pd.read_csv(loc_conflict_end, sep=';')
@@ -24,8 +30,19 @@ def main():
     conflict_new = conflict_all[["conflict_id", "start_date2", "ep_end", "ep_end_date"]]
     conflict_new = conflict_new[conflict_new["ep_end"] == 1]
 
-    print(conflict_new.head())
+    # Prep the GED dataset for merging all events with the same CCY into one
+    ged_active["CCY"] = ged_active.apply(lambda row: ccy_create(row), axis=1)
+    ccy_merge = pd.DataFrame(ged_active["CCY"].unique())
+    ccy_merge.rename(columns={0 : "CCY"}, inplace=True)
+    ccy_merge["deaths"] = 0
 
+    # Merge GED deaths by CCY
+    for row in ged_active.iterrows():
+        found = ccy_merge.loc[ccy_merge["CCY"] == row["CCY"]]
+
+    print(ccy_merge.head())
+
+    # ged_active.to_csv(loc_ged)
     return 0
 
 if __name__ == "__main__":
