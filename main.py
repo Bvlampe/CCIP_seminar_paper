@@ -26,7 +26,6 @@ def avg_years(values):
 
 
 def main():
-
     # Read datasets
     homicides = pd.read_csv(loc_homicides)
     homicides.drop(columns=homicides.columns[0], axis=1, inplace=True)
@@ -40,14 +39,15 @@ def main():
     # Mark the rows of conflicts that are over
     df = conflict_new.loc[:, ["conflict_id", "start_date2", "ep_end"]].groupby(["conflict_id", "start_date2"]).sum()
     df.reset_index(inplace=True)
-    df.rename(columns={"ep_end":"has_ended"}, inplace=True)
-    conflict_new = conflict_new.merge(df, left_on=["conflict_id", "start_date2"], right_on=["conflict_id", "start_date2"])
+    df.rename(columns={"ep_end": "has_ended"}, inplace=True)
+    conflict_new = conflict_new.merge(df, left_on=["conflict_id", "start_date2"],
+                                      right_on=["conflict_id", "start_date2"])
 
     # Remove presently ongoing conflicts
     conflict_new = conflict_new[conflict_new["has_ended"] == 1]
 
     # Fill end date for all conflict-years, add start and end year as well as duration
-    conflict_new["ep_end_date"].fillna(method = "bfill", inplace=True)
+    conflict_new["ep_end_date"].fillna(method="bfill", inplace=True)
     conflict_new["start_year"] = conflict_new["start_date2"].str[:4].astype(int)
     conflict_new["end_year"] = conflict_new["ep_end_date"].str[:4].astype(int)
     conflict_new["duration"] = conflict_new["end_year"].astype(int) - conflict_new["start_year"].astype(int) + 1
@@ -58,13 +58,14 @@ def main():
 
     ccy_merge.reset_index(inplace=True)
 
-    ccy_merge.rename(columns={"conflict_new_id" : "conflict_id"}, inplace=True)
+    ccy_merge.rename(columns={"conflict_new_id": "conflict_id"}, inplace=True)
     ccy_complete = ccy_merge.merge(conflict_new, left_on=["conflict_id", "year"], right_on=["conflict_id", "year"])
-    ccy_complete.to_csv(loc_merged_conflicts)
+    # ccy_complete.to_csv(loc_merged_conflicts)
 
     # Compact CCY into CC, removing the one line per year attribute
-    cc_iv = ccy_complete.loc[:, ["country", "conflict_id", "start_year", "end_year", "duration", "best"]].groupby(by=["country", "conflict_id", "start_year", "end_year", "duration"]).sum().reset_index()
-    cc_iv["avg_deaths"] = cc_iv["best"]/cc_iv["duration"]
+    cc_iv = ccy_complete.loc[:, ["country", "conflict_id", "start_year", "end_year", "duration", "best"]].groupby(
+        by=["country", "conflict_id", "start_year", "end_year", "duration"]).sum().reset_index()
+    cc_iv["avg_deaths"] = cc_iv["best"] / cc_iv["duration"]
 
     # Remove conflicts that started before 1965 or only just ended
     cc_iv.drop(cc_iv[cc_iv.start_year < 1965].index, inplace=True)
@@ -75,16 +76,12 @@ def main():
     country_dict = dict(zip(list(country_df["cc_iv"]), list(country_df["homicides"])))
     cc_iv.replace({"country": country_dict}, inplace=True)
 
-    # Check that the country names are compatible
-    set_a = set(cc_iv["country"])
-    set_b = set(homicides["Country Name"])
-
     # Create DV columns
     cc_iv["HR_before"] = None
     cc_iv["HR_after"] = None
 
     # Insert values for DV columns
-    for i in cc_iv.index:      #cc_iv.shape[0]
+    for i in cc_iv.index:  # cc_iv.shape[0]
         country = cc_iv.loc[i, "country"]
         start_year = int(cc_iv.loc[i, "start_year"])
         end_year = int(cc_iv.loc[i, "end_year"])
@@ -99,8 +96,21 @@ def main():
         cc_iv.loc[i, "HR_before"] = avg_before
         cc_iv.loc[i, "HR_after"] = avg_after
 
+    # Ensure numeric format
+    cc_iv["HR_before"] = cc_iv["HR_before"].astype(float)
+    cc_iv["HR_after"] = cc_iv["HR_after"].astype(float)
+
     # Drop rows that don't have both before and after values for the DV
     cc_iv.dropna(subset=["HR_before", "HR_after"], inplace=True)
+
+    # Add DV as ration of HR_after and HR_before
+    cc_ivdv = cc_iv
+    cc_ivdv["HR_rel_change"] = cc_ivdv["HR_after"] / cc_ivdv["HR_before"]
+
+    # Descriptive statistics
+    print(cc_ivdv.info())
+    print(cc_ivdv.describe(include='all'))
+    cc_ivdv.describe(include='all').to_csv("descriptive_stats.csv", sep=';', decimal=',',)
 
     return 0
 
