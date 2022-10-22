@@ -26,8 +26,8 @@ def avg_years(values):
 
 
 def main():
-    # Read datasets
 
+    # Read datasets
     homicides = pd.read_csv(loc_homicides)
     homicides.drop(columns=homicides.columns[0], axis=1, inplace=True)
     ged = pd.read_csv(loc_ged)
@@ -46,10 +46,8 @@ def main():
     # Remove presently ongoing conflicts
     conflict_new = conflict_new[conflict_new["has_ended"] == 1]
 
-    # Fill end date
+    # Fill end date for all conflict-years, add start and end year as well as duration
     conflict_new["ep_end_date"].fillna(method = "bfill", inplace=True)
-
-    # conflict_new = conflict_new[conflict_new["ep_end_date"].notna()]
     conflict_new["start_year"] = conflict_new["start_date2"].str[:4].astype(int)
     conflict_new["end_year"] = conflict_new["ep_end_date"].str[:4].astype(int)
     conflict_new["duration"] = conflict_new["end_year"].astype(int) - conflict_new["start_year"].astype(int) + 1
