@@ -1,0 +1,439 @@
+﻿Column1;cc_iv;homicides
+0;Afghanistan;Afghanistan
+1;Afghanistan;Afghanistan
+2;Afghanistan;Afghanistan
+3;Afghanistan;Afghanistan
+4;Albania;Albania
+5;Algeria;Algeria
+6;Algeria;Algeria
+7;Algeria;Algeria
+8;Angola;Angola
+9;Angola;Angola
+10;Angola;Angola
+11;Angola;Angola
+12;Angola;Angola
+13;Angola;Angola
+14;Angola;Angola
+15;Angola;Angola
+16;Angola;Angola
+17;Argentina;Argentina
+18;Armenia;Armenia
+19;Armenia;Armenia
+20;Armenia;Armenia
+21;Armenia;Armenia
+22;Azerbaijan;Azerbaijan
+23;Azerbaijan;Azerbaijan
+24;Azerbaijan;Azerbaijan
+25;Azerbaijan;Azerbaijan
+26;Azerbaijan;Azerbaijan
+27;Azerbaijan;Azerbaijan
+28;Azerbaijan;Azerbaijan
+29;Azerbaijan;Azerbaijan
+30;Bangladesh;Bangladesh
+31;Bangladesh;Bangladesh
+32;Bangladesh;Bangladesh
+33;Bangladesh;Bangladesh
+34;Bhutan;Bhutan
+35;Bosnia-Herzegovina;Bosnia and Herzegovina
+36;Bosnia-Herzegovina;Bosnia and Herzegovina
+37;Bosnia-Herzegovina;Bosnia and Herzegovina
+38;Bosnia-Herzegovina;Bosnia and Herzegovina
+39;Bosnia-Herzegovina;Bosnia and Herzegovina
+40;Burundi;Burundi
+41;Burundi;Burundi
+42;Burundi;Burundi
+43;Burundi;Burundi
+44;Burundi;Burundi
+45;Cambodia (Kampuchea);Cambodia
+46;Cambodia (Kampuchea);Cambodia
+47;Cameroon;Cameroon
+48;Cameroon;Cameroon
+49;Cameroon;Cameroon
+50;Cameroon;Cameroon
+51;Cameroon;Cameroon
+52;Central African Republic;Central African Republic
+53;Central African Republic;Central African Republic
+54;Central African Republic;Central African Republic
+55;Central African Republic;Central African Republic
+56;Central African Republic;Central African Republic
+57;Central African Republic;Central African Republic
+58;Chad;Chad
+59;Chad;Chad
+60;Chad;Chad
+61;Chad;Chad
+62;Chad;Chad
+63;Chad;Chad
+64;Chad;Chad
+65;China;China
+66;China;China
+67;China;China
+68;Colombia;Colombia
+69;Comoros;Comoros
+70;Comoros;Comoros
+71;Congo;Congo, Rep.
+72;Congo;Congo, Rep.
+73;Congo;Congo, Rep.
+74;Congo;Congo, Rep.
+75;Congo;Congo, Rep.
+76;Croatia;Croatia
+77;Croatia;Croatia
+78;Croatia;Croatia
+79;Croatia;Croatia
+80;DR Congo (Zaire);Congo, Dem. Rep.
+81;DR Congo (Zaire);Congo, Dem. Rep.
+82;DR Congo (Zaire);Congo, Dem. Rep.
+83;DR Congo (Zaire);Congo, Dem. Rep.
+84;DR Congo (Zaire);Congo, Dem. Rep.
+85;DR Congo (Zaire);Congo, Dem. Rep.
+86;DR Congo (Zaire);Congo, Dem. Rep.
+87;DR Congo (Zaire);Congo, Dem. Rep.
+88;DR Congo (Zaire);Congo, Dem. Rep.
+89;DR Congo (Zaire);Congo, Dem. Rep.
+90;DR Congo (Zaire);Congo, Dem. Rep.
+91;DR Congo (Zaire);Congo, Dem. Rep.
+92;DR Congo (Zaire);Congo, Dem. Rep.
+93;DR Congo (Zaire);Congo, Dem. Rep.
+94;DR Congo (Zaire);Congo, Dem. Rep.
+95;DR Congo (Zaire);Congo, Dem. Rep.
+96;DR Congo (Zaire);Congo, Dem. Rep.
+97;DR Congo (Zaire);Congo, Dem. Rep.
+98;Djibouti;Djibouti
+99;Djibouti;Djibouti
+100;Djibouti;Djibouti
+101;Djibouti;Djibouti
+102;Ecuador;Ecuador
+103;Ecuador;Ecuador
+104;Egypt;Egypt, Arab Rep.
+105;Egypt;Egypt, Arab Rep.
+106;Egypt;Egypt, Arab Rep.
+107;El Salvador;El Salvador
+108;Eritrea;Eritrea
+109;Eritrea;Eritrea
+110;Eritrea;Eritrea
+111;Eritrea;Eritrea
+112;Eritrea;Eritrea
+113;Ethiopia;Ethiopia
+114;Ethiopia;Ethiopia
+115;Ethiopia;Ethiopia
+116;Ethiopia;Ethiopia
+117;Ethiopia;Ethiopia
+118;Ethiopia;Ethiopia
+119;Ethiopia;Ethiopia
+120;Ethiopia;Ethiopia
+121;Ethiopia;Ethiopia
+122;Ethiopia;Ethiopia
+123;Ethiopia;Ethiopia
+124;Ethiopia;Ethiopia
+125;Ethiopia;Ethiopia
+126;Ethiopia;Ethiopia
+127;Ethiopia;Ethiopia
+128;France;France
+129;France;France
+130;Georgia;Georgia
+131;Georgia;Georgia
+132;Georgia;Georgia
+133;Georgia;Georgia
+134;Georgia;Georgia
+135;Georgia;Georgia
+136;Germany;Germany
+137;Guatemala;Guatemala
+138;Guinea;Guinea
+139;Guinea-Bissau;Guinea-Bissau
+140;Guinea-Bissau;Guinea-Bissau
+141;Guinea-Bissau;Guinea-Bissau
+142;Haiti;Haiti
+143;Haiti;Haiti
+144;Haiti;Haiti
+145;India;India
+146;India;India
+147;India;India
+148;India;India
+149;India;India
+150;India;India
+151;India;India
+152;India;India
+153;India;India
+154;India;India
+155;India;India
+156;India;India
+157;India;India
+158;India;India
+159;India;India
+160;India;India
+161;India;India
+162;India;India
+163;India;India
+164;India;India
+165;India;India
+166;India;India
+167;India;India
+168;India;India
+169;India;India
+170;India;India
+171;India;India
+172;India;India
+173;Indonesia;Indonesia
+174;Indonesia;Indonesia
+175;Indonesia;Indonesia
+176;Indonesia;Indonesia
+177;Indonesia;Indonesia
+178;Iran;Iran, Islamic Rep.
+179;Iran;Iran, Islamic Rep.
+180;Iran;Iran, Islamic Rep.
+181;Iran;Iran, Islamic Rep.
+182;Iran;Iran, Islamic Rep.
+183;Iran;Iran, Islamic Rep.
+184;Iran;Iran, Islamic Rep.
+185;Iran;Iran, Islamic Rep.
+186;Iran;Iran, Islamic Rep.
+187;Iran;Iran, Islamic Rep.
+188;Iran;Iran, Islamic Rep.
+189;Iran;Iran, Islamic Rep.
+190;Iraq;Iraq
+191;Iraq;Iraq
+192;Iraq;Iraq
+193;Iraq;Iraq
+194;Iraq;Iraq
+195;Iraq;Iraq
+196;Iraq;Iraq
+197;Iraq;Iraq
+198;Iraq;Iraq
+199;Iraq;Iraq
+200;Iraq;Iraq
+201;Iraq;Iraq
+202;Iraq;Iraq
+203;Iraq;Iraq
+204;Iraq;Iraq
+205;Iraq;Iraq
+206;Israel;Israel
+207;Israel;Israel
+208;Israel;Israel
+209;Israel;Israel
+210;Israel;Israel
+211;Israel;Israel
+212;Italy;Italy
+213;Ivory Coast;Cote d'Ivoire
+214;Ivory Coast;Cote d'Ivoire
+215;Ivory Coast;Cote d'Ivoire
+216;Jordan;Jordan
+217;Kenya;Kenya
+218;Kenya;Kenya
+219;Kenya;Kenya
+220;Kuwait;Kuwait
+221;Kyrgyzstan;Kyrgyz Republic
+222;Laos;Lao PDR
+223;Lebanon;Lebanon
+224;Lebanon;Lebanon
+225;Lebanon;Lebanon
+226;Lebanon;Lebanon
+227;Lebanon;Lebanon
+228;Lebanon;Lebanon
+229;Lebanon;Lebanon
+230;Lesotho;Lesotho
+231;Liberia;Liberia
+232;Liberia;Liberia
+233;Liberia;Liberia
+234;Liberia;Liberia
+235;Libya;Libya
+236;Libya;Libya
+237;Libya;Libya
+238;Libya;Libya
+239;Libya;Libya
+240;Macedonia, FYR;North Macedonia
+241;Malaysia;Malaysia
+242;Malaysia;Malaysia
+243;Mali;Mali
+244;Mali;Mali
+245;Mali;Mali
+246;Mali;Mali
+247;Mali;Mali
+248;Mali;Mali
+249;Mali;Mali
+250;Mali;Mali
+251;Mali;Mali
+252;Malta;Malta
+253;Mauritania;Mauritania
+254;Mexico;Mexico
+255;Mexico;Mexico
+256;Moldova;Moldova
+257;Morocco;Morocco
+258;Mozambique;Mozambique
+259;Mozambique;Mozambique
+260;Mozambique;Mozambique
+261;Mozambique;Mozambique
+262;Myanmar (Burma);Myanmar
+263;Myanmar (Burma);Myanmar
+264;Myanmar (Burma);Myanmar
+265;Myanmar (Burma);Myanmar
+266;Myanmar (Burma);Myanmar
+267;Myanmar (Burma);Myanmar
+268;Myanmar (Burma);Myanmar
+269;Myanmar (Burma);Myanmar
+270;Myanmar (Burma);Myanmar
+271;Myanmar (Burma);Myanmar
+272;Myanmar (Burma);Myanmar
+273;Myanmar (Burma);Myanmar
+274;Myanmar (Burma);Myanmar
+275;Myanmar (Burma);Myanmar
+276;Myanmar (Burma);Myanmar
+277;Myanmar (Burma);Myanmar
+278;Myanmar (Burma);Myanmar
+279;Myanmar (Burma);Myanmar
+280;Myanmar (Burma);Myanmar
+281;Myanmar (Burma);Myanmar
+282;Myanmar (Burma);Myanmar
+283;Myanmar (Burma);Myanmar
+284;Myanmar (Burma);Myanmar
+285;Myanmar (Burma);Myanmar
+286;Myanmar (Burma);Myanmar
+287;Myanmar (Burma);Myanmar
+288;Myanmar (Burma);Myanmar
+289;Myanmar (Burma);Myanmar
+290;Myanmar (Burma);Myanmar
+291;Myanmar (Burma);Myanmar
+292;Myanmar (Burma);Myanmar
+293;Namibia;Namibia
+294;Nepal;Nepal
+295;Netherlands;Netherlands
+296;Nicaragua;Nicaragua
+297;Niger;Niger
+298;Niger;Niger
+299;Niger;Niger
+300;Niger;Niger
+301;Niger;Niger
+302;Niger;Niger
+303;Nigeria;Nigeria
+304;Nigeria;Nigeria
+305;Nigeria;Nigeria
+306;Nigeria;Nigeria
+307;Pakistan;Pakistan
+308;Pakistan;Pakistan
+309;Pakistan;Pakistan
+310;Pakistan;Pakistan
+311;Pakistan;Pakistan
+312;Pakistan;Pakistan
+313;Pakistan;Pakistan
+314;Pakistan;Pakistan
+315;Pakistan;Pakistan
+316;Pakistan;Pakistan
+317;Pakistan;Pakistan
+318;Pakistan;Pakistan
+319;Pakistan;Pakistan
+320;Panama;Panama
+321;Panama;Panama
+322;Papua New Guinea;Papua New Guinea
+323;Papua New Guinea;Papua New Guinea
+324;Paraguay;Paraguay
+325;Peru;Peru
+326;Peru;Peru
+327;Peru;Peru
+328;Philippines;Philippines
+329;Philippines;Philippines
+330;Philippines;Philippines
+331;Philippines;Philippines
+332;Philippines;Philippines
+333;Philippines;Philippines
+334;Qatar;Qatar
+335;Romania;Romania
+336;Russia (Soviet Union);Russian Federation
+337;Russia (Soviet Union);Russian Federation
+338;Russia (Soviet Union);Russian Federation
+339;Russia (Soviet Union);Russian Federation
+340;Russia (Soviet Union);Russian Federation
+341;Russia (Soviet Union);Russian Federation
+342;Russia (Soviet Union);Russian Federation
+343;Russia (Soviet Union);Russian Federation
+344;Russia (Soviet Union);Russian Federation
+345;Rwanda;Rwanda
+346;Rwanda;Rwanda
+347;Rwanda;Rwanda
+348;Rwanda;Rwanda
+349;Rwanda;Rwanda
+350;Saudi Arabia;Saudi Arabia
+351;Saudi Arabia;Saudi Arabia
+352;Senegal;Senegal
+353;Senegal;Senegal
+354;Senegal;Senegal
+355;Senegal;Senegal
+356;Senegal;Senegal
+357;Senegal;Senegal
+358;Senegal;Senegal
+359;Serbia (Yugoslavia);Serbia
+360;Serbia (Yugoslavia);Serbia
+361;Serbia (Yugoslavia);Serbia
+362;Serbia (Yugoslavia);Serbia
+363;Serbia (Yugoslavia);Serbia
+364;Serbia (Yugoslavia);Serbia
+365;Sierra Leone;Sierra Leone
+366;Sierra Leone;Sierra Leone
+367;Solomon Islands;Solomon Islands
+368;Somalia;Somalia
+369;Somalia;Somalia
+370;Somalia;Somalia
+371;Somalia;Somalia
+372;Somalia;Somalia
+373;Somalia;Somalia
+374;South Sudan;South Sudan
+375;South Sudan;South Sudan
+376;South Sudan;South Sudan
+377;Spain;Spain
+378;Sri Lanka;Sri Lanka
+379;Sri Lanka;Sri Lanka
+380;Sri Lanka;Sri Lanka
+381;Sri Lanka;Sri Lanka
+382;Sudan;Sudan
+383;Sudan;Sudan
+384;Sudan;Sudan
+385;Sudan;Sudan
+386;Sudan;Sudan
+387;Sudan;Sudan
+388;Syria;Syrian Arab Republic
+389;Syria;Syrian Arab Republic
+390;Syria;Syrian Arab Republic
+391;Syria;Syrian Arab Republic
+392;Syria;Syrian Arab Republic
+393;Syria;Syrian Arab Republic
+394;Syria;Syrian Arab Republic
+395;Syria;Syrian Arab Republic
+396;Syria;Syrian Arab Republic
+397;Tajikistan;Tajikistan
+398;Tajikistan;Tajikistan
+399;Tajikistan;Tajikistan
+400;Tajikistan;Tajikistan
+401;Tanzania;Tanzania
+402;Thailand;Thailand
+403;Thailand;Thailand
+404;Thailand;Thailand
+405;Thailand;Thailand
+406;Thailand;Thailand
+407;Thailand;Thailand
+408;Trinidad and Tobago;Trinidad and Tobago
+409;Tunisia;Tunisia
+410;Tunisia;Tunisia
+411;Turkey;Turkiye
+412;Turkey;Turkiye
+413;Turkey;Turkiye
+414;Turkey;Turkiye
+415;Turkey;Turkiye
+416;Turkey;Turkiye
+417;Turkey;Turkiye
+418;Turkey;Turkiye
+419;Uganda;Uganda
+420;Uganda;Uganda
+421;Uganda;Uganda
+422;Uganda;Uganda
+423;Ukraine;Ukraine
+424;Ukraine;Ukraine
+425;Ukraine;Ukraine
+426;United Kingdom;United Kingdom
+427;United Kingdom;United Kingdom
+428;United States of America;United States
+429;Uzbekistan;Uzbekistan
+430;Uzbekistan;Uzbekistan
+431;Venezuela;Venezuela, RB
+432;Venezuela;Venezuela, RB
+433;Yemen (North Yemen);Yemen, Rep.
+434;Yemen (North Yemen);Yemen, Rep.
+435;Yemen (North Yemen);Yemen, Rep.
+436;Yemen (North Yemen);Yemen, Rep.
+437;Yemen (North Yemen);Yemen, Rep.

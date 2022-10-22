@@ -1,25 +1,23 @@
 import pandas as pd
-
-document = False
+import numpy as np
 
 loc_homicides = "homicides.csv"
 loc_ged = "GED_cleaned.csv"
 loc_conflict_end = "ucdp-term-acd-3-2021.csv"
 loc_conflict_all = "ucdp-prio-acd-221.csv"
-loc_merged_conflicts = "merged_conflicts.xlsx"
+loc_merged_conflicts = "merged_conflicts.csv"
+loc_concordance = "Country_names.csv"
 
 
 def main():
     # Read datasets
+
     homicides = pd.read_csv(loc_homicides)
     ged = pd.read_csv(loc_ged)
     conflict_end = pd.read_csv(loc_conflict_end)
-    if document: print("Shape of GED before cleaning up inactive year events:", ged.shape)
     ged_active = ged[ged["active_year"] == 1]
-    if document: print("Shape of GED after cleaning up inactive year events:", ged_active.shape)
     conflict_all = pd.read_csv(loc_conflict_all)
 
-    # Filter the ACD to exclude rows of non-ending conflicts to avoid doubles
     conflict_new = conflict_all[["conflict_id", "start_date2", "ep_end", "ep_end_date", "year"]]
 
     # Mark the rows of conflicts that are over
@@ -33,7 +31,6 @@ def main():
 
     # Fill end date
     conflict_new["ep_end_date"].fillna(method = "bfill", inplace=True)
-    print(conflict_new.head(10))
 
     # conflict_new = conflict_new[conflict_new["ep_end_date"].notna()]
     conflict_new["start_year"] = conflict_new["start_date2"].str[:4]
@@ -47,14 +44,25 @@ def main():
     ccy_merge.reset_index(inplace=True)
 
     ccy_merge.rename(columns={"conflict_new_id" : "conflict_id"}, inplace=True)
-    print(ccy_merge.columns)
     ccy_complete = ccy_merge.merge(conflict_new, left_on=["conflict_id", "year"], right_on=["conflict_id", "year"])
-    print(ccy_complete.head(20))
-    print(ccy_complete.columns)
+    ccy_complete.to_csv(loc_merged_conflicts)
 
-    ccy_complete.to_excel(loc_merged_conflicts)
+    # Compact CCY into CC, removing the one line per year attribute
+    cc_iv = ccy_complete.loc[:, ["country", "conflict_id", "start_year", "end_year", "duration", "best"]].groupby(by=["country", "conflict_id", "start_year", "end_year", "duration"]).sum().reset_index()
+    cc_iv["avg_deaths"] = cc_iv["best"]/cc_iv["duration"]
 
-    # ged_active.to_csv(loc_ged)
+    # Harmonize country names
+    country_df = pd.read_csv(loc_concordance, sep=';')
+    country_dict = dict(zip(list(country_df["cc_iv"]), list(country_df["homicides"])))
+    cc_iv.replace({"country": country_dict}, inplace=True)
+
+    # Check that the country names are compatible
+    set_a = set(cc_iv["country"])
+    set_b = set(homicides["Country Name"])
+    print("CC_IV but not Homicides:", set_a - set_b, ", total: ", len(set_a - set_b))
+
+
+
     return 0
 
 
