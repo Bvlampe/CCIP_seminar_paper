@@ -1,17 +1,16 @@
 import pandas as pd
 
+
 document = True
 
-loc_folder = "D:/Wichtig/Uni/MSc Political Science/Other materials/CCIP seminar paper datasets/CSV/"
-
-loc_homicides = loc_folder + "homicides.csv"
-loc_ged = loc_folder + "GED_cleaned.csv"
-loc_conflict_end = loc_folder + "ucdp-term-acd-3-2021.csv"
-loc_conflict_all = loc_folder + "ucdp-prio-acd-221.csv"
+loc_homicides = "homicides.csv"
+loc_ged = "GED_cleaned.csv"
+loc_conflict_end ="ucdp-term-acd-3-2021.csv"
+loc_conflict_all = "ucdp-prio-acd-221.csv"
 
 
 def ccy_create(row):
-    return tuple([row["country"],row["conflict_new_id"], row["year"]])
+    return tuple([row["country"], row["conflict_new_id"], row["year"]])
 
 
 def main():
@@ -24,6 +23,7 @@ def main():
     if document: print("Shape of GED after cleaning up inactive year events:", ged_active.shape)
     conflict_all = pd.read_csv(loc_conflict_all, sep=';')
 
+    return 0
     # conf_end = conflict[conflict["ep_end_date"] == 1]
     # if document: print("Shape of ACD after cleaning up ongoing conflicts:", conf_end.shape)
 
