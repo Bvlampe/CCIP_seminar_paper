@@ -100,12 +100,13 @@ def main():
     # Drop country-episodes with 0 deaths
     cc_iv.drop(cc_iv[cc_iv.best == 0].index, inplace=True)
 
-    # Drop rows that don't have both before and after values for the DV
-    cc_iv.dropna(subset=["HR_before", "HR_after"], inplace=True)
-
     # Add DV as ration of HR_after and HR_before
     cc_ivdv = cc_iv
-    cc_ivdv["HR_rel_change"] = cc_ivdv["HR_after"] / cc_ivdv["HR_before"]
+    for i in cc_ivdv.index:
+        if cc_ivdv.loc[i, "HR_after"] and cc_ivdv.loc[i, "HR_before"]:
+            cc_ivdv.loc[i, "HR_rel_change"] = cc_ivdv.loc[i, "HR_after"] / cc_ivdv.loc[i, "HR_before"]
+        else:
+            cc_ivdv.loc[i, "HR_rel_change"] = None
 
     # Add CV: global homicide rate (starting 2000)
     cc_ivdv["CV_global_homicides"] = None
@@ -124,8 +125,21 @@ def main():
         country = cc_ivdv.loc[i, "country"]
         cc_ivdv.loc[i, "CV_pop"] = df_population.loc[df_population["Country Name"] == country, str(year)].values[0]
 
-    # Descriptive statistics and output of csv for analysis
-    cc_ivdv.describe(include='all').to_csv("descriptive_stats.csv", sep=';', decimal=',')
+    # Output "dirty" dataset
+    cc_ivdv.to_csv("output_dirty.csv")
+
+    # Determine SD for important variables, set outliers to none (beyond 2SD)
+    for variable in ["HR_rel_change", "CV_global_homicides"]:
+        mean = cc_ivdv[variable].mean()
+        sd = cc_ivdv[variable].std()
+        for i in cc_ivdv.index:
+            if abs(cc_ivdv.loc[i, variable] - mean) > 2 * sd:
+                cc_ivdv.loc[i, variable] = None
+
+    # Drop rows that have missing values
+    cc_ivdv.dropna(subset=["avg_deaths", "HR_before", "HR_after", "HR_rel_change", "CV_pop", "CV_global_homicides"], inplace=True)
+
+    # Output of csv for analysis
     cc_ivdv.to_csv("output.csv")
 
     return 0
