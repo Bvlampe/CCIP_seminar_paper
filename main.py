@@ -112,7 +112,10 @@ def main():
     homicides_world = homicides.loc[homicides["Country Name"] == "World", :]
     for i in cc_ivdv.index:
         year = cc_ivdv.loc[i, "end_year"]
-        cc_ivdv.loc[i, "CV_global_homicides"] = homicides_world.loc[:, str(year)].values[0]
+        homicides = homicides_world.loc[:, str(year)].values[0]
+        if isinstance(homicides, str):
+            homicides = float(homicides.replace(',', '.'))
+        cc_ivdv.loc[i, "CV_global_homicides"] = homicides
 
     # Add CV: country population at conflict end
     cc_ivdv["CV_pop"] = None
