@@ -4,9 +4,7 @@ import sys
 
 loc_homicides = "homicides.csv"
 loc_ged = "GED_cleaned.csv"
-loc_conflict_end = "ucdp-term-acd-3-2021.csv"
 loc_conflict_all = "ucdp-prio-acd-221.csv"
-loc_merged_conflicts = "merged_conflicts.csv"
 loc_concordance = "Country_names.csv"
 loc_population = "CV_population.csv"
 
@@ -31,7 +29,6 @@ def main():
     homicides = pd.read_csv(loc_homicides)
     homicides.drop(columns=homicides.columns[0], axis=1, inplace=True)
     ged = pd.read_csv(loc_ged)
-    conflict_end = pd.read_csv(loc_conflict_end)
     ged_active = ged[ged["active_year"] == 1]
     conflict_all = pd.read_csv(loc_conflict_all)
     conflict_new = conflict_all[["conflict_id", "start_date2", "ep_end", "ep_end_date", "year"]]
@@ -61,7 +58,6 @@ def main():
 
     ccy_merge.rename(columns={"conflict_new_id": "conflict_id"}, inplace=True)
     ccy_complete = ccy_merge.merge(conflict_new, left_on=["conflict_id", "year"], right_on=["conflict_id", "year"])
-    # ccy_complete.to_csv(loc_merged_conflicts)
 
     # Compact CCY into CC, removing the one line per year attribute
     cc_iv = ccy_complete.loc[:, ["country", "conflict_id", "start_year", "end_year", "duration", "best"]].groupby(
