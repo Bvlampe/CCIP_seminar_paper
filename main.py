@@ -23,8 +23,7 @@ def avg_years(values):
         print([type(x) for x in values])
         sys.exit("Error in averaging the homicide rates for the following series:")
 
-
-def main():
+def prep():
     # Read datasets
     homicides = pd.read_csv(loc_homicides)
     homicides.drop(columns=homicides.columns[0], axis=1, inplace=True)
@@ -137,11 +136,28 @@ def main():
                 cc_ivdv.loc[i, variable] = None
 
     # Drop rows that have missing values
-    cc_ivdv.dropna(subset=["avg_deaths", "HR_before", "HR_after", "HR_rel_change", "CV_pop", "CV_global_homicides"], inplace=True)
+    cc_ivdv.dropna(subset=["avg_deaths", "HR_before", "HR_after", "HR_rel_change", "CV_pop", "CV_global_homicides"],
+                   inplace=True)
 
     # Output of csv for analysis
     cc_ivdv.to_csv("output.csv")
 
+    return 0
+
+
+def analyse():
+    dirty_data = pd.read_csv("output_dirty.csv")
+    dataset = pd.read_csv("output.csv")
+
+    dirty_data.describe().to_csv("dirty_descriptive_stats.csv")
+    dataset.describe().to_csv("descriptive_stats.csv")
+
+    return 0
+
+
+def main():
+    prep()
+    analyse()
     return 0
 
 
