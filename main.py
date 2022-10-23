@@ -8,6 +8,7 @@ loc_conflict_end = "ucdp-term-acd-3-2021.csv"
 loc_conflict_all = "ucdp-prio-acd-221.csv"
 loc_merged_conflicts = "merged_conflicts.csv"
 loc_concordance = "Country_names.csv"
+loc_population = "CV_population.csv"
 
 
 def avg_years(values):
@@ -33,8 +34,8 @@ def main():
     conflict_end = pd.read_csv(loc_conflict_end)
     ged_active = ged[ged["active_year"] == 1]
     conflict_all = pd.read_csv(loc_conflict_all)
-
     conflict_new = conflict_all[["conflict_id", "start_date2", "ep_end", "ep_end_date", "year"]]
+    df_population = pd.read_csv(loc_population, sep=';', header=1)
 
     # Mark the rows of conflicts that are over
     df = conflict_new.loc[:, ["conflict_id", "start_date2", "ep_end"]].groupby(["conflict_id", "start_date2"]).sum()
@@ -100,6 +101,9 @@ def main():
     cc_iv["HR_before"] = cc_iv["HR_before"].astype(float)
     cc_iv["HR_after"] = cc_iv["HR_after"].astype(float)
 
+    # Drop country-episodes with 0 deaths
+    cc_iv.drop(cc_iv[cc_iv.best == 0].index, inplace=True)
+
     # Drop rows that don't have both before and after values for the DV
     cc_iv.dropna(subset=["HR_before", "HR_after"], inplace=True)
 
@@ -107,10 +111,23 @@ def main():
     cc_ivdv = cc_iv
     cc_ivdv["HR_rel_change"] = cc_ivdv["HR_after"] / cc_ivdv["HR_before"]
 
-    # Descriptive statistics
-    print(cc_ivdv.info())
-    print(cc_ivdv.describe(include='all'))
-    cc_ivdv.describe(include='all').to_csv("descriptive_stats.csv", sep=';', decimal=',',)
+    # Add CV: global homicide rate (starting 2000)
+    cc_ivdv["CV_global_homicides"] = None
+    homicides_world = homicides.loc[homicides["Country Name"] == "World", :]
+    for i in cc_ivdv.index:
+        year = cc_ivdv.loc[i, "end_year"]
+        cc_ivdv.loc[i, "CV_global_homicides"] = homicides_world.loc[:, str(year)].values[0]
+
+    # Add CV: country population at conflict end
+    cc_ivdv["CV_pop"] = None
+    for i in cc_ivdv.index:
+        year = cc_ivdv.loc[i, "end_year"]
+        country = cc_ivdv.loc[i, "country"]
+        cc_ivdv.loc[i, "CV_pop"] = df_population.loc[df_population["Country Name"] == country, str(year)].values[0]
+
+    # Descriptive statistics and output of csv for analysis
+    cc_ivdv.describe(include='all').to_csv("descriptive_stats.csv", sep=';', decimal=',')
+    cc_ivdv.to_csv("output.csv")
 
     return 0
 
