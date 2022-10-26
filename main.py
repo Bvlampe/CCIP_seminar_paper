@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import sys
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 loc_homicides = "homicides.csv"
 loc_ged = "GED_cleaned.csv"
@@ -126,7 +128,7 @@ def prepGED():
         cc_ivdv.loc[i, "CV_pop"] = df_population.loc[df_population["Country Name"] == country, str(year)].values[0]
 
     # Output "dirty" dataset
-    cc_ivdv.to_csv("output_GED_dirty.csv")
+    cc_ivdv.to_csv("output_GED_dirty.csv", index=False)
 
     # Determine SD for important variables, set outliers to none (beyond 2SD)
     for variable in ["HR_rel_change", "CV_global_homicides"]:
@@ -141,7 +143,7 @@ def prepGED():
                    inplace=True)
 
     # Output of csv for analysis
-    cc_ivdv.to_csv("output_GED.csv")
+    cc_ivdv.to_csv("output_GED.csv", index=False)
 
     return 0
 
@@ -166,22 +168,20 @@ def prepBRD():
         BRD_countries += [x for x in df_brd.loc[i, "battle_location"].replace(' ', '').split(',')]
     BRD_countries = set(BRD_countries)
     for c in BRD_countries:
-        if c in country_dict.values():
+        if c in country_dict.keys():
             BRD_countries.remove(c)
-            BRD_countries.add(BRD_countries[c])
+            BRD_countries.add(country_dict[c])
+    # BRD_countries now contains the VALID country names that are recognised by the homicide dataset
 
-    # Create dummy variables per country
-    for c in BRD_countries:
-        df_brd[c] = 0
-
-    # Assign values to the dummy variables
+    # Split BRD set into country-specific rows
+    cols = ["conflict_id", "year", "country", "deaths"]
+    df_brd_new = pd.DataFrame(columns=cols)
     for i in df_brd.index:
-        for c in df_brd.loc[i, "battle_location"].replace(' ', '').split(','):
-            if c in BRD_countries:
-                df_brd.loc[i, c] = 1
-            else:
-                df_brd.loc[i, country_dict[c]] = 1
-    df_brd.drop(columns=["battle_location"], inplace=True)
+        num_cs = len(df_brd.loc[i, "battle_location"].replace(' ', '').split(','))
+        for country in df_brd.loc[i, "battle_location"].replace(' ', '').split(','):
+            if country not in BRD_countries:
+                country = country_dict[country]
+            df_brd_new.loc[len(df_brd_new.index)] = [df_brd.loc[i, "conflict_id"], df_brd.loc[i, "year"], country, df_brd.loc[i, "bd_best"] / num_cs]
 
     # Mark the rows of conflicts that are over
     df = conflict_new.loc[:, ["conflict_id", "start_date2", "ep_end"]].groupby(["conflict_id", "start_date2"]).sum()
@@ -199,30 +199,40 @@ def prepBRD():
     conflict_new["end_year"] = conflict_new["ep_end_date"].str[:4].astype(int)
     conflict_new["duration"] = conflict_new["end_year"].astype(int) - conflict_new["start_year"].astype(int) + 1
 
-    # Add up deaths per CCY triad
-    ccy_merge = df_brd.loc[:, :].groupby(
-        by=set(df_brd.columns).remove("bd_best")).sum()
+    # Add episode start and end year to BRD set to ensure episode specificity
+    df_brd_new["start_year"] = None
+    df_brd_new["end_year"] = None
+    df_brd_new["duration"] = None
+    for i in df_brd_new.index:
+        start_year = None
+        end_year = None
+        year = df_brd_new.loc[i, "year"]
+        conf = df_brd_new.loc[i, "conflict_id"]
+        for j in conflict_new.index:
+            if conflict_new.loc[j, "conflict_id"] == conf:
+                if conflict_new.loc[j, "start_year"] <= year <= conflict_new.loc[j, "end_year"]:
+                    start_year = conflict_new.loc[j, "start_year"]
+                    end_year = conflict_new.loc[j, "end_year"]
+                    break
+        df_brd_new.loc[i, "start_year"] = start_year
+        df_brd_new.loc[i, "end_year"] = end_year
+        if start_year:
+            df_brd_new.loc[i, "duration"] = end_year - start_year + 1
 
-    return 0
+    # Add up deaths per CCY row by year, turning them into CC rows
+    sum_by = ["conflict_id", "country", "start_year", "end_year", "duration"]
+    cc_iv = df_brd_new.loc[:, ["conflict_id", "country", "deaths", "start_year", "end_year", "duration"]].groupby(by=sum_by).sum().reset_index()
+    cc_iv["avg_deaths"] = cc_iv["deaths"] / cc_iv["duration"]
 
-    ccy_merge.reset_index(inplace=True)
-
-    ccy_merge.rename(columns={"conflict_new_id": "conflict_id"}, inplace=True)
-    ccy_complete = ccy_merge.merge(conflict_new, left_on=["conflict_id", "year"], right_on=["conflict_id", "year"])
-
-    # Compact CCY into CC, removing the one line per year attribute
-    cc_iv = ccy_complete.loc[:, ["country", "conflict_id", "start_year", "end_year", "duration", "best"]].groupby(
-        by=["country", "conflict_id", "start_year", "end_year", "duration"]).sum().reset_index()
-    cc_iv["avg_deaths"] = cc_iv["best"] / cc_iv["duration"]
-
-    # Remove conflicts that started before 1965 or only just ended
+    # Remove conflicts that started before 1965 or only just ended or have no start and end years
+    cc_iv.dropna(subset=["start_year", "end_year", "duration"], inplace=True)
     cc_iv.drop(cc_iv[cc_iv.start_year < 1965].index, inplace=True)
     cc_iv.drop(cc_iv[cc_iv.end_year > 2020].index, inplace=True)
 
-    # Harmonize country names
-    country_df = pd.read_csv(loc_concordance, sep=';')
-    country_dict = dict(zip(list(country_df["cc_iv"]), list(country_df["homicides"])))
-    cc_iv.replace({"country": country_dict}, inplace=True)
+    # # Harmonize country names
+    # country_df = pd.read_csv(loc_concordance, sep=';')
+    # country_dict = dict(zip(list(country_df["cc_iv"]), list(country_df["homicides"])))
+    # cc_iv.replace({"country": country_dict}, inplace=True)
 
     # Create DV columns
     cc_iv["HR_before"] = None
@@ -247,9 +257,6 @@ def prepBRD():
     # Ensure numeric format
     cc_iv["HR_before"] = cc_iv["HR_before"].astype(float)
     cc_iv["HR_after"] = cc_iv["HR_after"].astype(float)
-
-    # Drop country-episodes with 0 deaths
-    cc_iv.drop(cc_iv[cc_iv.best == 0].index, inplace=True)
 
     # Add DV as ration of HR_after and HR_before
     cc_ivdv = cc_iv
@@ -277,7 +284,7 @@ def prepBRD():
         cc_ivdv.loc[i, "CV_pop"] = df_population.loc[df_population["Country Name"] == country, str(year)].values[0]
 
     # Output "dirty" dataset
-    cc_ivdv.to_csv("output_GED_dirty.csv")
+    cc_ivdv.to_csv("output_BRD_dirty.csv", index=False)
 
     # Determine SD for important variables, set outliers to none (beyond 2SD)
     for variable in ["HR_rel_change", "CV_global_homicides"]:
@@ -292,23 +299,29 @@ def prepBRD():
                    inplace=True)
 
     # Output of csv for analysis
-    cc_ivdv.to_csv("output_GED.csv")
+    cc_ivdv.to_csv("output_BRD.csv", index=False)
 
     return 0
 
-def analyse():
-    dirty_data = pd.read_csv("output_GED_dirty.csv")
-    dataset = pd.read_csv("output_GED.csv")
 
-    dirty_data.describe().to_csv("dirty_descriptive_stats.csv")
-    dataset.describe().to_csv("descriptive_stats.csv")
+def analyse():
+    dirty_GED = pd.read_csv("output_GED_dirty.csv")
+    data_GED = pd.read_csv("output_GED.csv")
+    dirty_BRD = pd.read_csv("output_BRD_dirty.csv")
+    data_BRD = pd.read_csv("output_BRD.csv")
+
+    dirty_GED.describe().to_csv("GED_desc_dirty.csv")
+    data_GED.describe().to_csv("GED_desc.csv")
+    dirty_BRD.describe().to_csv("BRD_desc_dirty.csv")
+    data_BRD.describe().to_csv("BRD_desc.csv")
 
     return 0
 
 
 def main():
+    prepGED()
     prepBRD()
-    # analyse()
+    analyse()
     return 0
 
 
