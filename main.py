@@ -133,8 +133,8 @@ def prepGED():
     # Output "dirty" dataset
     cc_ivdv.to_csv("output_GED_dirty.csv", index=False)
 
-    # Determine SD for important variables, set outliers to none (beyond 2SD)
-    for variable in ["HR_rel_change", "CV_global_homicides"]:
+    # Determine SD for DV and IV, set outliers to none (beyond 2SD)
+    for variable in ["HR_rel_change", "avg_deaths"]:
         mean = cc_ivdv[variable].mean()
         sd = cc_ivdv[variable].std()
         for i in cc_ivdv.index:
@@ -286,8 +286,8 @@ def prepBRD():
     # Output "dirty" dataset
     cc_ivdv.to_csv("output_BRD_dirty.csv", index=False)
 
-    # Determine SD for important variables, set outliers to none (beyond 2SD)
-    for variable in ["HR_rel_change", "CV_global_homicides"]:
+    # Determine SD for DV and IV, set outliers to none (beyond 2SD)
+    for variable in ["HR_rel_change", "avg_deaths"]:
         mean = cc_ivdv[variable].mean()
         sd = cc_ivdv[variable].std()
         for i in cc_ivdv.index:
