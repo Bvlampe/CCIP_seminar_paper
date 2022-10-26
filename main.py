@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import sys
+
+# Avoids FutureWarnings clogging the console (and slowing down the program) when using pd.df.append()
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
@@ -24,6 +26,7 @@ def avg_years(values):
         print(values)
         print([type(x) for x in values])
         sys.exit("Error in averaging the homicide rates for the following series:")
+
 
 def prepGED():
     loc_concordance = "Countries_GED.csv"
@@ -149,6 +152,7 @@ def prepGED():
 
 
 def prepBRD():
+    # Read concordance table for country names
     loc_concordance = "Countries_BRD.csv"
     # Read datasets
     df_brd = pd.read_csv(loc_brd)[["conflict_id", "year", "battle_location", "bd_best"]]
@@ -171,7 +175,7 @@ def prepBRD():
         if c in country_dict.keys():
             BRD_countries.remove(c)
             BRD_countries.add(country_dict[c])
-    # BRD_countries now contains the VALID country names that are recognised by the homicide dataset
+    # BRD_countries now contains the VALID country names that are present in the homicide dataset
 
     # Split BRD set into country-specific rows
     cols = ["conflict_id", "year", "country", "deaths"]
@@ -224,15 +228,11 @@ def prepBRD():
     cc_iv = df_brd_new.loc[:, ["conflict_id", "country", "deaths", "start_year", "end_year", "duration"]].groupby(by=sum_by).sum().reset_index()
     cc_iv["avg_deaths"] = cc_iv["deaths"] / cc_iv["duration"]
 
-    # Remove conflicts that started before 1965 or only just ended or have no start and end years
+    # Remove conflicts that started before 1965 or only just ended
+    # or have no start and end years (meaning they are currently ongoing)
     cc_iv.dropna(subset=["start_year", "end_year", "duration"], inplace=True)
     cc_iv.drop(cc_iv[cc_iv.start_year < 1965].index, inplace=True)
     cc_iv.drop(cc_iv[cc_iv.end_year > 2020].index, inplace=True)
-
-    # # Harmonize country names
-    # country_df = pd.read_csv(loc_concordance, sep=';')
-    # country_dict = dict(zip(list(country_df["cc_iv"]), list(country_df["homicides"])))
-    # cc_iv.replace({"country": country_dict}, inplace=True)
 
     # Create DV columns
     cc_iv["HR_before"] = None
@@ -304,7 +304,7 @@ def prepBRD():
     return 0
 
 
-def analyse():
+def create_descriptives():
     dirty_GED = pd.read_csv("output_GED_dirty.csv")
     data_GED = pd.read_csv("output_GED.csv")
     dirty_BRD = pd.read_csv("output_BRD_dirty.csv")
@@ -321,7 +321,7 @@ def analyse():
 def main():
     prepGED()
     prepBRD()
-    analyse()
+    create_descriptives()
     return 0
 
 
