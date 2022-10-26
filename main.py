@@ -310,10 +310,10 @@ def analyse():
     dirty_BRD = pd.read_csv("output_BRD_dirty.csv")
     data_BRD = pd.read_csv("output_BRD.csv")
 
-    dirty_GED.describe().to_csv("GED_desc_dirty.csv")
-    data_GED.describe().to_csv("GED_desc.csv")
-    dirty_BRD.describe().to_csv("BRD_desc_dirty.csv")
-    data_BRD.describe().to_csv("BRD_desc.csv")
+    dirty_GED.describe().to_csv("desc_GED_dirty.csv")
+    data_GED.describe().to_csv("desc_GED.csv")
+    dirty_BRD.describe().to_csv("desc_BRD_dirty.csv")
+    data_BRD.describe().to_csv("desc_BRD.csv")
 
     return 0
 
