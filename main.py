@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import sys
+import math
 
 # Avoids FutureWarnings clogging the console (and slowing down the program) when using pd.df.append()
 import warnings
@@ -129,6 +130,11 @@ def prepGED():
         year = cc_ivdv.loc[i, "end_year"]
         country = cc_ivdv.loc[i, "country"]
         cc_ivdv.loc[i, "CV_pop"] = df_population.loc[df_population["Country Name"] == country, str(year)].values[0]
+
+    # Take the logarithm of IV and country population
+    for i in cc_ivdv.index:
+        cc_ivdv.loc[i, "avg_deaths"] = math.log(cc_ivdv.loc[i, "avg_deaths"])
+        cc_ivdv.loc[i, "CV_pop"] = math.log(cc_ivdv.loc[i, "CV_pop"])
 
     # Output "dirty" dataset
     cc_ivdv.to_csv("output_GED_dirty.csv", index=False)
@@ -282,6 +288,11 @@ def prepBRD():
         year = cc_ivdv.loc[i, "end_year"]
         country = cc_ivdv.loc[i, "country"]
         cc_ivdv.loc[i, "CV_pop"] = df_population.loc[df_population["Country Name"] == country, str(year)].values[0]
+
+    # Take the logarithm of IV and country population
+    for i in cc_ivdv.index:
+        cc_ivdv.loc[i, "avg_deaths"] = math.log(cc_ivdv.loc[i, "avg_deaths"])
+        cc_ivdv.loc[i, "CV_pop"] = math.log(cc_ivdv.loc[i, "CV_pop"])
 
     # Output "dirty" dataset
     cc_ivdv.to_csv("output_BRD_dirty.csv", index=False)
