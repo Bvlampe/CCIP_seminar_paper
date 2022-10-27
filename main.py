@@ -14,6 +14,8 @@ loc_conflict_all = "ucdp-prio-acd-221.csv"
 loc_population = "CV_population.csv"
 loc_brd = "BRD.csv"
 
+death_thresh = [25, 1000]  # Yearly death thresholds that separate low, medium, and high-intensity conflict categories
+
 def avg_years(values):
     try:
         for i in range(len(values)):
@@ -130,6 +132,17 @@ def prepGED():
         year = cc_ivdv.loc[i, "end_year"]
         country = cc_ivdv.loc[i, "country"]
         cc_ivdv.loc[i, "CV_pop"] = df_population.loc[df_population["Country Name"] == country, str(year)].values[0]
+
+    # Add categorical IV
+    cc_ivdv["IV_deaths_cat"] = None
+    for i in cc_ivdv.index:
+        d = cc_ivdv.loc[i, "avg_deaths"]
+        if d < death_thresh[0]:
+            cc_ivdv.loc[i, "IV_deaths_cat"] = "low"
+        elif d < death_thresh[1]:
+            cc_ivdv.loc[i, "IV_deaths_cat"] = "medium"
+        else:
+            cc_ivdv.loc[i, "IV_deaths_cat"] = "high"
 
     # Take the logarithm of IV and country population
     for i in cc_ivdv.index:
@@ -289,6 +302,17 @@ def prepBRD():
         country = cc_ivdv.loc[i, "country"]
         cc_ivdv.loc[i, "CV_pop"] = df_population.loc[df_population["Country Name"] == country, str(year)].values[0]
 
+    # Add categorical IV
+    cc_ivdv["IV_deaths_cat"] = None
+    for i in cc_ivdv.index:
+        d = cc_ivdv.loc[i, "avg_deaths"]
+        if d < death_thresh[0]:
+            cc_ivdv.loc[i, "IV_deaths_cat"] = "low"
+        elif d < death_thresh[1]:
+            cc_ivdv.loc[i, "IV_deaths_cat"] = "medium"
+        else:
+            cc_ivdv.loc[i, "IV_deaths_cat"] = "high"
+
     # Take the logarithm of IV and country population
     for i in cc_ivdv.index:
         cc_ivdv.loc[i, "avg_deaths"] = math.log(cc_ivdv.loc[i, "avg_deaths"])
@@ -321,10 +345,10 @@ def create_descriptives():
     dirty_BRD = pd.read_csv("output_BRD_dirty.csv")
     data_BRD = pd.read_csv("output_BRD.csv")
 
-    dirty_GED.describe().to_csv("desc_GED_dirty.csv")
-    data_GED.describe().to_csv("desc_GED.csv")
-    dirty_BRD.describe().to_csv("desc_BRD_dirty.csv")
-    data_BRD.describe().to_csv("desc_BRD.csv")
+    dirty_GED.describe(include='all').to_csv("desc_GED_dirty.csv")
+    data_GED.describe(include='all').to_csv("desc_GED.csv")
+    dirty_BRD.describe(include='all').to_csv("desc_BRD_dirty.csv")
+    data_BRD.describe(include='all').to_csv("desc_BRD.csv")
 
     return 0
 
